@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magenizr Debugger
+ *
+ * @category    Magenizr
+ * @package     Magenizr_Debugger
+ * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
+ * @license     https://www.magenizr.com/license/ Magenizr EULA
+ */
+-->
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Magenizr_Debugger::css/style.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Magenizr\Debugger\Block\Adminhtml\View\Dashboard" name="magenizr.debugger.adminhtml.view.dashboard" template="Magenizr_Debugger::view/dashboard.phtml"/>
+            <!--<block class="Magenizr\Debugger\Block\Adminhtml\Info" name="magenizr.debug.info" template="Magenizr_Debugger::info.phtml"/>-->
+        </referenceContainer>
+    </body>
+</page>

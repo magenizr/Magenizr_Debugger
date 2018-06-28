@@ -1,0 +1,8 @@
+"Delete","Effacer"
+"Category ( %1 )","Catégorie ( %1 )"
+"Could not delete category: %1","Impossible de supprimer la catégorie: %1"
+"Category ( %1 ) is not deletable.","La catégorie ( %1 ) n'est pas supprimable/"
+"Category ( %1 ) was deleted successfully.","La catégorie ( % 1 ) a été supprimée avec succès."
+"Category ( %1 ) was deleted successfully, including all sub categories.","Catégorie ( % 1 ) supprimée avec succès, y compris toutes les sous-catégories."
+"Please confirm the deletion of category id <strong>%1</strong> with <strong>%2</strong> sub categories. This action can affect your business and is not recoverable.","Veuillez confirmer la suppression de la catégorie id <strong>%1</strong> avec les sous-catégories <strong>%2</strong>. Cette action peut affecter votre entreprise et n'est pas récupérable."
+"Please confirm the deletion of category id <strong>%1</strong> with <strong>%2</strong> sub category. This action can affect your business and is not recoverable.","euillez confirmer la suppression de la catégorie id <strong>%1</strong> avec la sous-catégorie <strong>%2</strong>. Cette action peut affecter votre entreprise et n'est pas récupérable."

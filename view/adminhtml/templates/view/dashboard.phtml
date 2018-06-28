@@ -1,0 +1,132 @@
+<!--
+/**
+ * Magenizr Debugger
+ *
+ * @category    Magenizr
+ * @package     Magenizr_Debugger
+ * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
+ * @license     https://www.magenizr.com/license/ Magenizr EULA
+ */
+-->
+
+<?php
+
+$fileSystem = $block->getFileSystem();
+$php = $block->getPhp();
+$helper = $block->getHelper();
+$dirs = ['var/log', 'var/report'];
+
+$reportFile = $fileSystem->getLastReportFile();
+
+?>
+
+<div id="magenizr-debug">
+
+    <div class="row">
+
+        <div class="col-m-6">
+
+            <h2><?php echo __('Logs and Reports'); ?></h2>
+
+            <ul>
+                <?php foreach($dirs as $dir) : ?>
+                    <li>
+                        <?php $details = $fileSystem->getDirDetails($dir); ?>
+                        <?php $link = $helper->getDownloadUrl($dir); ?>
+                        <?php echo sprintf('<a href="%s">%s</a>', $link, $details['name']); ?>
+                        <?php echo __('(%1)', $details['size']); ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+
+        </div>
+
+        <div class="col-m-6">
+            <h2><?php echo __('PHP'); ?></h2>
+            <?php echo $php->getPhpVersion(); ?>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-m-6">
+            <h2><?php echo __('PHP Info'); ?></h2>
+            <h3><?php echo __('General'); ?></h3>
+            <table class="phpinfo general">
+                <?php foreach($php->getGeneral() as $key => $value) : ?>
+                    <tr>
+                        <th class="a-left c33"><?php echo $key; ?></th>
+                        <td class="a-left c66"><?php echo $value; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
+
+        <div class="col-m-6">
+            <h2 class="no-border">&nbsp;</h2>
+            <h3><?php echo __('Core'); ?></h3>
+            <table class="phpinfo core">
+                <tr>
+                    <th class="data-grid-th a-left row"><?php echo 'Directive'; ?></th>
+                    <th class="data-grid-th a-left row"><?php echo 'Local Value'; ?></th>
+                    <th class="data-grid-th a-left row"><?php echo 'Master Value'; ?></th>
+                </tr>
+                <?php foreach($php->getCore() as $key => $value) : ?>
+                    <?php if (!is_array($value)) continue; ?>
+                    <tr>
+                        <th class="a-left c33"><?php echo $key; ?></th>
+                        <td class="a-left c33"><?php echo wordwrap($value['local'], 40, "<br />", true); ?></td>
+                        <td class="a-left c33"><?php echo wordwrap($value['master'], 40, "<br />", true); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-m-6">
+
+            <h3><?php echo __('Array'); ?></h3>
+            <table class="phpinfo modules">
+                <?php foreach($php->getPhpInfoExcept(['General', 'Core', 'PHP Variables']) as $key => $value) : ?>
+                    <tr>
+                        <th class="a-left row"><?php echo $key; ?></th>
+                        <td class="a-left row"><?php echo $value; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+
+            <h3><?php echo __('PHP Variables'); ?></h3>
+            <table>
+                <tr>
+                    <th class="data-grid-th a-left"><?php echo 'Variable'; ?></th>
+                    <th class="data-grid-th a-left"><?php echo 'Value'; ?></th>
+                </tr>
+                <?php foreach($php->getPhpVariables() as $key => $value) : ?>
+                    <?php if (strpos($key, '$') === false) continue; ?>
+                    <tr>
+                        <th class="a-left"><?php echo $key; ?></th>
+                        <td class="a-left"><?php echo $value; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-m-12">
+            <h2><?php echo __('Report'); ?></h2>
+
+            <?php if ($reportFile): ?>
+                <p><?php echo __('Latest report file <strong>%1</strong> from ./var/reports/.', basename($reportFile)); ?></p>
+
+                <textarea class=""><?php echo $fileSystem->getLastReportFileContent(); ?></textarea>
+            <?php else: ?>
+                <p><?php echo __('No report file available.'); ?></p>
+            <?php endif; ?>
+
+        </div>
+    </div>
+
+</div>

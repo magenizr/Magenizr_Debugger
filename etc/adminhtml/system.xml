@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magenizr CategoryConfirmDelete
+ *
+ * @category    Magenizr
+ * @package     Magenizr_CategoryConfirmDelete
+ * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
+ * @license     https://www.magenizr.com/license/ Magenizr EULA
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="dev" translate="label" sortOrder="1000" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="magenizr_debugger" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Debugger</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <comment><![CDATA[Disable the functionality temporarily.]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="download_logs_allow" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Download Log Files</label>
+                    <comment><![CDATA[Allow authenticated admin users to download the entire ./var/log/ folder.]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="download_report_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Download Report Files</label>
+                    <comment><![CDATA[Allow authenticated admin users to download the entire ./var/report/ folder.]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="report_display_latest" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Display Latest Report File</label>
+                    <comment><![CDATA[Allow authenticated admin users to show the latest report file from ./var/report/.]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="zip_folder_max_size" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Max folder size for zipping folders</label>
+                    <comment><![CDATA[E.g 100M, 512M, 1GB. The download can timeout depending on your server configurations and the size of the folder.]]></comment>
+                </field>
+
+                <field id="php_display_version" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Display PHP Version</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="php_display_detail_full" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Display Full PHP Info</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+            </group>
+        </section>
+    </system>
+</config>

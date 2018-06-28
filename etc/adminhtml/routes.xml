@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magenizr Debugger
+ *
+ * @category    Magenizr
+ * @package     Magenizr_Debugger
+ * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
+ * @license     https://www.magenizr.com/license/ Magenizr EULA
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin">
+        <route id="magenizr_debugger" frontName="magenizr_debugger">
+            <module name="Magenizr_Debugger" before="Magento_Backend" />
+        </route>
+    </router>
+</config>

@@ -1,0 +1,8 @@
+"Delete","Delete"
+"Category ( %1 )","Category ( %1 )"
+"Could not delete category: %1","Could not delete category: %1"
+"Category ( %1 ) is not deletable.","Category ( %1 ) is not deletable."
+"Category ( %1 ) was deleted successfully.","Category ( %1 ) was deleted successfully."
+"Category ( %1 ) was deleted successfully, including all sub categories.","Category ( %1 ) was deleted successfully, including all sub categories."
+"Please confirm the deletion of category id <strong>%1</strong> with <strong>%2</strong> sub categories. This action can affect your business and is not recoverable.","Please confirm the deletion of category id <strong>%1</strong> with <strong>%2</strong> sub categories. This action can affect your business and is not recoverable."
+"Please confirm the deletion of category id <strong>%1</strong> with <strong>%2</strong> sub category. This action can affect your business and is not recoverable.","Please confirm the deletion of category id <strong>%1</strong> with <strong>%2</strong> sub category. This action can affect your business and is not recoverable."
