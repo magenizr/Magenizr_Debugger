@@ -5,128 +5,84 @@
  * @category    Magenizr
  * @package     Magenizr_Debugger
  * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
- * @license     https://www.magenizr.com/license/ Magenizr EULA
+ * @license     http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 -->
 
 <?php
 
-$fileSystem = $block->getFileSystem();
-$php = $block->getPhp();
 $helper = $block->getHelper();
-$dirs = ['var/log', 'var/report'];
-
-$reportFile = $fileSystem->getLastReportFile();
+$types = ['log', 'report'];
+$reportFile = $block->getFileSystem()->getLastReportFile();
 
 ?>
 
 <div id="magenizr-debug">
 
-    <div class="row">
+    <?php if ($helper->isAccessRestricted()): ?>
+        <p><?php echo __('The access to this feature is restricted.'); ?></p>
+    <?php else: ?>
 
-        <div class="col-m-6">
+        <?php if (!$helper->getScopeConfig('enabled')): ?>
+            <p><?php echo __('The module is temporarily disabled. Go to <i>Stores > Configuration > Advanced > Developer > Debugger</i> and enable Debugger.'); ?></p>
+        <?php else: ?>
 
-            <h2><?php echo __('Logs and Reports'); ?></h2>
+            <div class="row">
+                <div class="col-m-6">
+                    <h2><?php echo __('Logs and Reports'); ?></h2>
+                    <?php if ($helper->getScopeConfig('download_logs_reports_allow')): ?>
+                        <ul>
+                            <?php foreach($types as $type) : ?>
+                                <li>
+                                    <?php
+                                        $details = $block->getFileSystem()->getDirDetails($type);
+                                        if (empty($details)) { continue; }
+                                    ?>
 
-            <ul>
-                <?php foreach($dirs as $dir) : ?>
-                    <li>
-                        <?php $details = $fileSystem->getDirDetails($dir); ?>
-                        <?php $link = $helper->getDownloadUrl($dir); ?>
-                        <?php echo sprintf('<a href="%s">%s</a>', $link, $details['name']); ?>
-                        <?php echo __('(%1)', $details['size']); ?>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
+                                    <?php $link = $block->getUrl('magenizr_debugger/download/file', [
+                                        '_current' => true,
+                                        '_use_rewrite'=>true,
+                                        '_query' => ['type' => $type]
+                                    ]); ?>
 
-        </div>
+                                    <?php echo sprintf('<a href="%s">%s</a>', $link, $details['name']); ?>
+                                    <?php echo __('(%1)', $details['size']); ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <p><?php echo __('This feature is disabled in the configurations.'); ?></p>
+                    <?php endif; ?>
 
-        <div class="col-m-6">
-            <h2><?php echo __('PHP'); ?></h2>
-            <?php echo $php->getPhpVersion(); ?>
-        </div>
+                </div>
+                <div class="col-m-6">
+                    <h2><?php echo __('PHP'); ?></h2>
+                    <?php if ($helper->getScopeConfig('php_display_version')): ?>
+                        <?php echo $block->getPhp()->getPhpVersion(); ?>
+                    <?php else: ?>
+                        <p><?php echo __('This feature is disabled in the configurations.'); ?></p>
+                    <?php endif; ?>
+                </div>
+            </div>
 
-    </div>
+            <div class="row">
+                <div class="col-m-12">
+                    <h2><?php echo __('Report'); ?></h2>
+                    <?php if ($helper->getScopeConfig('report_display_latest')): ?>
+                        <?php if ($reportFile): ?>
+                            <p><?php echo __('Latest report file <strong>%1</strong> from ./var/report/.', basename($reportFile)); ?></p>
 
-    <div class="row">
-        <div class="col-m-6">
-            <h2><?php echo __('PHP Info'); ?></h2>
-            <h3><?php echo __('General'); ?></h3>
-            <table class="phpinfo general">
-                <?php foreach($php->getGeneral() as $key => $value) : ?>
-                    <tr>
-                        <th class="a-left c33"><?php echo $key; ?></th>
-                        <td class="a-left c66"><?php echo $value; ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-        </div>
+                            <textarea class=""><?php echo $block->getFileSystem()->getLastReportFileContent(); ?></textarea>
+                        <?php else: ?>
+                            <p><?php echo __('There is no report file available.'); ?></p>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <p><?php echo __('This feature is disabled in the configurations.'); ?></p>
+                    <?php endif; ?>
+                </div>
+            </div>
 
-        <div class="col-m-6">
-            <h2 class="no-border">&nbsp;</h2>
-            <h3><?php echo __('Core'); ?></h3>
-            <table class="phpinfo core">
-                <tr>
-                    <th class="data-grid-th a-left row"><?php echo 'Directive'; ?></th>
-                    <th class="data-grid-th a-left row"><?php echo 'Local Value'; ?></th>
-                    <th class="data-grid-th a-left row"><?php echo 'Master Value'; ?></th>
-                </tr>
-                <?php foreach($php->getCore() as $key => $value) : ?>
-                    <?php if (!is_array($value)) continue; ?>
-                    <tr>
-                        <th class="a-left c33"><?php echo $key; ?></th>
-                        <td class="a-left c33"><?php echo wordwrap($value['local'], 40, "<br />", true); ?></td>
-                        <td class="a-left c33"><?php echo wordwrap($value['master'], 40, "<br />", true); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-m-6">
-
-            <h3><?php echo __('Array'); ?></h3>
-            <table class="phpinfo modules">
-                <?php foreach($php->getPhpInfoExcept(['General', 'Core', 'PHP Variables']) as $key => $value) : ?>
-                    <tr>
-                        <th class="a-left row"><?php echo $key; ?></th>
-                        <td class="a-left row"><?php echo $value; ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-
-            <h3><?php echo __('PHP Variables'); ?></h3>
-            <table>
-                <tr>
-                    <th class="data-grid-th a-left"><?php echo 'Variable'; ?></th>
-                    <th class="data-grid-th a-left"><?php echo 'Value'; ?></th>
-                </tr>
-                <?php foreach($php->getPhpVariables() as $key => $value) : ?>
-                    <?php if (strpos($key, '$') === false) continue; ?>
-                    <tr>
-                        <th class="a-left"><?php echo $key; ?></th>
-                        <td class="a-left"><?php echo $value; ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-m-12">
-            <h2><?php echo __('Report'); ?></h2>
-
-            <?php if ($reportFile): ?>
-                <p><?php echo __('Latest report file <strong>%1</strong> from ./var/reports/.', basename($reportFile)); ?></p>
-
-                <textarea class=""><?php echo $fileSystem->getLastReportFileContent(); ?></textarea>
-            <?php else: ?>
-                <p><?php echo __('No report file available.'); ?></p>
-            <?php endif; ?>
-
-        </div>
-    </div>
+        <?php endif; ?>
+    <?php endif; ?>
 
 </div>

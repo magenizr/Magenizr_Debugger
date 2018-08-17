@@ -6,7 +6,7 @@
  * @category    Magenizr
  * @package     Magenizr_Debugger
  * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
- * @license     https://www.magenizr.com/license/ Magenizr EULA
+ * @license     http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 -->
 
@@ -16,8 +16,8 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Magenizr\Debugger\Block\Adminhtml\View\Dashboard" name="magenizr.debugger.adminhtml.view.dashboard" template="Magenizr_Debugger::view/dashboard.phtml"/>
-            <!--<block class="Magenizr\Debugger\Block\Adminhtml\Info" name="magenizr.debug.info" template="Magenizr_Debugger::info.phtml"/>-->
+            <block class="Magenizr\Debugger\Block\Adminhtml\Base" name="magenizr.debugger.adminhtml.view.dashboard" template="Magenizr_Debugger::view/dashboard.phtml"/>
+            <block class="Magenizr\Debugger\Block\Adminhtml\Base" name="magenizr.debugger.adminhtml.info" template="Magenizr_Debugger::info.phtml"/>
         </referenceContainer>
     </body>
 </page>

@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!--
 /**
- * Magenizr CategoryConfirmDelete
+ * Magenizr Debugger
  *
  * @category    Magenizr
- * @package     Magenizr_CategoryConfirmDelete
+ * @package     Magenizr_Debugger
  * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
- * @license     https://www.magenizr.com/license/ Magenizr EULA
+ * @license     http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 -->
 
@@ -17,41 +17,42 @@
                 <label>Debugger</label>
                 <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enabled</label>
-                    <comment><![CDATA[Disable the functionality temporarily.]]></comment>
+                    <comment><![CDATA[Disable the module temporarily.]]></comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
-                <field id="download_logs_allow" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Allow Download Log Files</label>
-                    <comment><![CDATA[Allow authenticated admin users to download the entire ./var/log/ folder.]]></comment>
+                <field id="download_logs_reports_allow" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Download of Log and Review Files</label>
+                    <comment><![CDATA[Allow admin users to download the entire ./var/log/ and ./var/report/ folder.]]></comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-
-                <field id="download_report_allow" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Allow Download Report Files</label>
-                    <comment><![CDATA[Allow authenticated admin users to download the entire ./var/report/ folder.]]></comment>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
                 </field>
 
                 <field id="report_display_latest" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Display Latest Report File</label>
-                    <comment><![CDATA[Allow authenticated admin users to show the latest report file from ./var/report/.]]></comment>
+                    <comment><![CDATA[Allow admin users to see the latest report file from ./var/report/ without downloading the entire folder.]]></comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-
-                <field id="zip_folder_max_size" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Max folder size for zipping folders</label>
-                    <comment><![CDATA[E.g 100M, 512M, 1GB. The download can timeout depending on your server configurations and the size of the folder.]]></comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
                 </field>
 
                 <field id="php_display_version" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Display PHP Version</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
                 </field>
 
-                <field id="php_display_detail_full" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Display Full PHP Info</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                <field id="restriction_ip" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Restrict Access (IP Address)</label>
+                    <comment><![CDATA[Enter one or multiple IP addresses comma-separated. Leave it blank to allow access from everywhere.]]></comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
                 </field>
 
             </group>

@@ -5,7 +5,7 @@
  * @category    Magenizr
  * @package     Magenizr_Debugger
  * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
- * @license     https://www.magenizr.com/license/ Magenizr EULA
+ * @license     http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 namespace Magenizr\Debugger\Helper;
@@ -17,26 +17,37 @@ namespace Magenizr\Debugger\Helper;
 class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
 {
 
-    /**
-     * @var \Magento\Framework\Filesystem\DirectoryList
-     */
-    protected $dir;
-
-    protected $lastReportFile;
+    private $lastReportFile;
 
     /**
      * FileSystem constructor.
-     * @param \Magento\Framework\Filesystem\DirectoryList $dir
+     * @param \Magento\Framework\Filesystem\Driver\File $driverFile
+     * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
+     * @param Data $data
+     * @param \Magento\Framework\Archive\Tar $tarArchive
      * @param \Magento\Framework\App\Helper\Context $context
      */
     public function __construct(
-        \Magento\Framework\Filesystem\DirectoryList $dir,
+        \Magento\Framework\Filesystem\Driver\File $driverFile,
+        \Magento\Framework\Filesystem\DirectoryList $directoryList,
+        \Magenizr\Debugger\Helper\Data $data,
+        \Magento\Framework\Archive\Tar $tarArchive,
         \Magento\Framework\App\Helper\Context $context
     ) {
-        parent::__construct($context);
+        $this->driverFile = $driverFile;
+        $this->directoryList = $directoryList;
+        $this->data = $data;
+        $this->tarArchive = $tarArchive;
 
-        $this->dir = $dir;
-        $this->setLastReportFile();
+        parent::__construct($context);
+    }
+
+    /**
+     * @return \Magento\Framework\Filesystem\Driver\File
+     */
+    public function getDriverFile()
+    {
+        return $this->driverFile;
     }
 
     /**
@@ -44,54 +55,62 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getDir()
     {
-        return $this->dir;
+        return $this->directoryList;
     }
 
     /**
      * @param $dir
      * @return mixed
      */
-    public function getPath($dir = '')
+    public function getAbsolutePath($dir = '')
     {
+        $path = $this->getDriverFile()->getAbsolutePath(
+            $this->getDir()->getRoot() . DIRECTORY_SEPARATOR,
+            $dir
+        );
 
-        $absolutePath = $this->getDir()->getRoot();
-
-        if (strlen($dir) > 1)
-            $absolutePath = $absolutePath . '/' . $dir;
-
-        return $absolutePath;
+        return ($this->getDriverFile()->isDirectory($path)) ? $path : false;
     }
 
     /**
-     * @param $dir
+     * @param $path
      * @return int
      */
-    public function getDirSize($dir)
+    public function getDirSize($path)
     {
         $size = 0;
-        $files = glob($dir . '/*');
+        $files = $this->getDriverFile()->readDirectoryRecursively($path);
 
-        foreach($files as $path) {
-            is_file($path) && $size += filesize($path);
-            is_dir($path) && $this->getDirSize($path);
+        foreach ($files as $file) {
+            $stat = $this->getDriverFile()->stat($file);
+
+            $this->getDriverFile()->isFile($file) && $size += $stat['size'];
         }
 
         return $size;
     }
 
     /**
-     * @param $dir
+     * @param $type
      * @return array
      */
-    public function getDirDetails($dir)
+    public function getDirDetails($type)
     {
-        $path = $this->getPath($dir);
-        $size = $this->getDirSize($path);
-
         $details = [];
-        $details['path'] = $path;
-        $details['size'] = $this->getHumanFilesize($size);
-        $details['name'] = $this->getLabel($dir);
+        $dir = $this->data->getPathByType($type);
+        $path = $this->getAbsolutePath($dir);
+
+        if ($path) {
+            $size = $this->getDirSize($path);
+
+            if ($size == 0) {
+                return $details;
+            }
+
+            $details['path'] = $path;
+            $details['size'] = $this->getHumanFilesize($size);
+            $details['name'] = $this->getLabel($dir);
+        }
 
         return $details;
     }
@@ -111,34 +130,22 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $bytes
-     * @param int $decimals
-     * @return string
+     * @param $path
+     * @return array
      */
-    public function getHumanFilesize($bytes, $decimals = 2) {
-        $sz = 'BKMGTP';
-        $factor = floor((strlen($bytes) - 1) / 3);
-        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
-    }
-
-    /**
-     * @param $dir
-     */
-    public function getFilesFromFolder($path)
+    public function getFilesFromDirectory($path)
     {
-        if (is_readable($path)) {
-
+        if ($this->getDriverFile()->isDirectory($path)) {
             $list = [];
 
-            $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS));
+            $files = $this->getDriverFile()->readDirectory($path);
 
-            foreach ($iterator as $file) {
+            foreach ($files as $file) {
+                $stat = $this->getDriverFile()->stat($file);
 
-                $ctime = $file->getCTime();
-
-                $list[$ctime] = [
-                    'name' => $file->getFileName(),
-                    'realpath' => $file->getRealPath()
+                $list[$stat['ctime']] = [
+                    'name' => $file,
+                    'realpath' => $this->getDriverFile()->getRealPath($file)
                 ];
             }
 
@@ -148,24 +155,20 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
         return [];
     }
 
-    protected function setLastReportFile() {
+    private function setLastReportFile()
+    {
+        if ($path = $this->getAbsolutePath('var/report')) {
+            // List of files
+            $list = $this->getFilesFromDirectory($path);
 
-        // Absolute path to dir
-        $path = $this->getPath('var/report');
+            if (!empty($list)) {
+                sort($list);
 
-        // List of files
-        $list = $this->getFilesFromFolder($path);
+                $file = array_values($list)[0];
 
-        if (count($list) > 0) {
-
-            sort($list);
-
-            // At least one file
-
-            $file = array_values($list)[0];
-
-            if (is_readable($file['realpath'])) {
-                $this->lastReportFile = $file['realpath'];
+                if ($this->getDriverFile()->fileGetContents($file['realpath'])) {
+                    $this->lastReportFile = $file['realpath'];
+                }
             }
         }
     }
@@ -175,7 +178,9 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getLastReportFile()
     {
-        if (is_readable($this->lastReportFile)) {
+        $this->setLastReportFile();
+
+        if ($this->lastReportFile && $this->getDriverFile()->fileGetContents($this->lastReportFile)) {
             return $this->lastReportFile;
         }
 
@@ -183,12 +188,12 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return bool|string
+     * @return bool
      */
     public function getLastReportFileContent()
     {
         if ($file = $this->getLastReportFile()) {
-            return file_get_contents($file);
+            return $this->getDriverFile()->fileGetContents($file);
         }
 
         return false;
@@ -197,40 +202,25 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @param $sourceDir
      * @param $destFile
+     * @return mixed
      */
-    public function addDirToZip($sourceDir, $destFile)
+    public function packFolder($sourceDir, $destFile)
     {
-        if (is_dir($sourceDir)) {
-
-            $zip = new \ZipArchive();
-
-            if ($zip->open($destFile, \ZIPARCHIVE::CREATE) !== TRUE) {
-                $this->messageManager->addError(__('Could not open zip file archive. Make sure %1 is writeable.', $destFile));
-                return;
-            }
-
-            $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($sourceDir, \RecursiveIteratorIterator::SELF_FIRST));
-
-            foreach ($files as $file) {
-
-                // Ignore "." and ".." folders
-                if( in_array(substr($file, strrpos($file, '/')+1), array('.', '..')) )
-                    continue;
-
-                $file = realpath($file);
-
-                if (is_dir($file) === true)
-                {
-                    $zip->addEmptyDir(str_replace($sourceDir . '/', '', $file . '/'));
-                }
-                else if (is_file($file) === true)
-                {
-                    $zip->addFromString(str_replace($sourceDir . '/', '', $file), file_get_contents($file));
-                }
-            }
-
-            $zip->close();
+        if ($this->getDriverFile()->isDirectory($sourceDir)) {
+            return $this->tarArchive->pack($sourceDir, $destFile);
         }
     }
 
+    /**
+     * @param $bytes
+     * @return string
+     */
+    public function getHumanFilesize($bytes)
+    {
+        $base = log($bytes) / log(1024);
+        $suffix = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $fbase = floor($base);
+
+        return ($bytes == 0) ? $bytes : round(pow(1024, $base - floor($base)), 1) . $suffix[$fbase];
+    }
 }

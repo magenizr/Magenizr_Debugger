@@ -5,7 +5,7 @@
  * @category    Magenizr
  * @package     Magenizr_Debugger
  * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
- * @license     https://www.magenizr.com/license/ Magenizr EULA
+ * @license     http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 namespace Magenizr\Debugger\Block\Adminhtml;
@@ -16,19 +16,8 @@ namespace Magenizr\Debugger\Block\Adminhtml;
  */
 class Base extends \Magento\Framework\View\Element\Template
 {
-
     /**
-     * @var \Magenizr\Debugger\Helper\FileSystem
-     */
-    protected $fileSystem;
-
-    /**
-     * @var \Magenizr\Debugger\Helper\Php
-     */
-    protected $php;
-
-    /**
-     * Dashboard constructor.
+     * Base constructor.
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magenizr\Debugger\Helper\Data $helper
      * @param \Magenizr\Debugger\Helper\Php $php
@@ -40,11 +29,11 @@ class Base extends \Magento\Framework\View\Element\Template
         \Magenizr\Debugger\Helper\Php $php,
         \Magenizr\Debugger\Helper\FileSystem $fileSystem
     ) {
-        parent::__construct($context);
-
         $this->helper = $helper;
         $this->php = $php;
         $this->fileSystem = $fileSystem;
+
+        parent::__construct($context);
     }
 
     /**

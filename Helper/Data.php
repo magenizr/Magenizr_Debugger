@@ -5,7 +5,7 @@
  * @category    Magenizr
  * @package     Magenizr_Debugger
  * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
- * @license     https://www.magenizr.com/license/ Magenizr EULA
+ * @license     http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 namespace Magenizr\Debugger\Helper;
@@ -14,27 +14,36 @@ use \Magento\Framework\App\Request\Http;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
-
-    /**
-     * @var \Magento\Framework\UrlInterface
-     */
-    protected $urlBuilder;
-
     /**
      * Data constructor.
      * @param Http $request
-     * @param \Magento\Framework\UrlInterface $urlBuilder
      * @param \Magento\Framework\App\Helper\Context $context
      */
     public function __construct(
         Http $request,
-        \Magento\Framework\UrlInterface $urlBuilder,
         \Magento\Framework\App\Helper\Context $context
     ) {
-        parent::__construct($context);
-
-        $this->urlBuilder = $urlBuilder;
         $this->request = $request;
+
+        parent::__construct($context);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccessRestricted()
+    {
+        if (empty(trim($this->getScopeConfig('restriction_ip')))) {
+            return false;
+        }
+
+        $restrictedIps = array_map('trim', explode(',', $this->getScopeConfig('restriction_ip')));
+
+        if (in_array($this->remoteAddress->getRemoteAddress(), $restrictedIps)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -42,16 +51,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function isModuleEnabled()
     {
-        return $this->getScopeConfig('system_tools/magenizr_debugger/enabled');
-    }
-
-    /**
-     * @param $path
-     * @return mixed
-     */
-    public function getScopeConfig($path)
-    {
-        return $this->scopeConfig->getValue($path);
+        return $this->getScopeConfig('enabled');
     }
 
     /**
@@ -64,15 +64,28 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $dir
+     * @param $type
+     * @return bool|mixed
      */
-    public function getDownloadUrl($dir)
+    public function getPathByType($type)
     {
-        $url = $this->urlBuilder->getUrl('magenizr_debugger/download/file', [
-            '_current' => true,
-            '_query' => ['dir' => $dir, 'type' => basename($dir)]
-        ]);
+        $typesMapping = [
+            'log' => 'var/log',
+            'report' => 'var/report',
+        ];
 
-        return $url;
+        return (array_key_exists($type, $typesMapping)) ? $typesMapping[$type] : false;
+    }
+
+    /**
+     * @param $field
+     * @return mixed
+     */
+    public function getScopeConfig($field)
+    {
+        return $this->scopeConfig->getValue(
+            sprintf('dev/magenizr_debugger/%s', $field),
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
     }
 }

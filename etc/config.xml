@@ -6,7 +6,7 @@
  * @category    Magenizr
  * @package     Magenizr_Debugger
  * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
- * @license     https://www.magenizr.com/license/ Magenizr EULA
+ * @license     http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 -->
 
@@ -15,12 +15,10 @@
         <dev>
             <magenizr_debugger>
                 <enabled>1</enabled>
-                <download_logs_allow>1</download_logs_allow>
-                <download_report_allow>1</download_report_allow>
+                <download_logs_reports_allow>1</download_logs_reports_allow>
                 <report_display_latest>1</report_display_latest>
-
                 <php_display_version>1</php_display_version>
-                <php_display_detail_full>1</php_display_detail_full>
+                <restriction_ip></restriction_ip>
             </magenizr_debugger>
         </dev>
     </default>

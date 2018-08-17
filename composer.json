@@ -1,6 +1,6 @@
 {
   "name": "magenizr/magento2-debugger",
-  "description": "This Magento 2 module prevents admin users from deleting product category trees accidently. The admin user has to confirm the delete action on a confirmation page.",
+  "description": "This Magento 2 module allows developers to view the latest report file from ./var/report/ or download the entire log and report folder as a tar file.",
   "type": "magento2-module",
   "version": "1.0.0",
   "license": [
@@ -27,9 +27,9 @@
     "Magento 2",
     "Admin",
     "Backend",
-    "Delete",
-    "Categories",
-    "Confirmation"
+    "Logs",
+    "Reports",
+    "Download"
   ],
   "autoload": {
     "files": [

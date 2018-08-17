@@ -5,7 +5,7 @@
  * @category    Magenizr
  * @package     Magenizr_Debugger
  * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
- * @license     https://www.magenizr.com/license/ Magenizr EULA
+ * @license     http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 namespace Magenizr\Debugger\Controller\Adminhtml\Download;
@@ -19,53 +19,30 @@ use Magento\Framework\Exception\CouldNotDeleteException;
  */
 class File extends \Magento\Backend\App\Action
 {
-
-    /**
-     * @var \Magento\Framework\Message\ManagerInterface
-     */
-    protected $messageManager;
-
-    /**
-     * @var \Magento\Framework\App\Response\Http\FileFactory
-     */
-    protected $fileFactory;
-
-    /**
-     * @var \Magento\Framework\Controller\Result\RawFactory
-     */
-    protected $resultRawFactory;
-
-    /**
-     * @var \Magento\Framework\Filesystem\DirectoryList
-     */
-    protected $dir;
-
     /**
      * File constructor.
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
      * @param \Magento\Framework\App\Response\Http\FileFactory $fileFactory
-     * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Magenizr\Debugger\Helper\Data $helper
      * @param \Magenizr\Debugger\Helper\FileSystem $fileSystem
-     * @param \Magento\Framework\Filesystem\DirectoryList $dir
+     * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
         \Magento\Framework\App\Response\Http\FileFactory $fileFactory,
-        \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magenizr\Debugger\Helper\Data $helper,
         \Magenizr\Debugger\Helper\FileSystem $fileSystem,
-        \Magento\Framework\Filesystem\DirectoryList $dir
+        \Magento\Framework\Filesystem\DirectoryList $directoryList
     ) {
-        parent::__construct($context);
         $this->resultRawFactory = $resultRawFactory;
         $this->fileFactory = $fileFactory;
-        $this->messageManager = $messageManager;
         $this->helper = $helper;
-        $this->filesystem = $fileSystem;
-        $this->dir = $dir;
+        $this->fileSystem = $fileSystem;
+        $this->directoryList = $directoryList;
+
+        parent::__construct($context);
     }
 
     /**
@@ -75,36 +52,53 @@ class File extends \Magento\Backend\App\Action
     {
         $time = time();
         $type = $this->getRequest()->getParam('type');
-        $dir = $this->getRequest()->getParam('dir');
-        $sourceDir = $this->filesystem->getPath($dir);
+        $dir = $this->helper->getPathByType($type);
+        $sourceDir = $this->getFileSystem()->getAbsolutePath($dir);
 
         // Temporary storage folder
-        $destDir = sys_get_temp_dir();
+        $destDir = $this->directoryList->getPath('var');
 
-        $fileName = sprintf('%s_%s.zip', $type, $time);
-        $destFile = sprintf('%s%s', $destDir, $fileName);
+        $fileName = sprintf('%s_%s.tar', $type, $time);
+        $destFile = sprintf('%s/%s', $destDir, $fileName);
 
         try {
+            if ($this->getFileSystem()->getDriverFile()->isWritable($destDir)) {
+                // Zip folder
+                $destFile = $this->getFileSystem()->packFolder($sourceDir, $destFile);
 
-            if (is_readable($sourceDir)) {
+                // Stream file to browser
+                $this->fileFactory->create(
+                    $fileName,
+                    $this->getFileSystem()->getDriverFile()->fileGetContents($destFile),
+                    \Magento\Framework\App\Filesystem\DirectoryList::VAR_DIR,
+                    'application/octet-stream'
+                );
 
+                $resultRaw = $this->resultRawFactory->create();
+
+                // Delete zipped file
+                 $this->getFileSystem()->getDriverFile()->deleteFile($destFile);
+
+                return $resultRaw;
             }
-
-            // Zip folder
-            $this->filesystem->addDirToZip($sourceDir, $destFile);
-
-            // Stream file to browser
-            if (is_readable($destFile)) {
-
-                header('Content-Type: application/octet-stream');
-                header('Content-Disposition: attachment; filename="'.$fileName.'"');
-                header('Content-Length: '.filesize($destFile) );
-                readfile($destFile);
-            }
-
         } catch (\Exception $e) {
             $this->messageManager->addException($e, $e->getMessage());
         }
     }
 
+    /**
+     * @return \Magenizr\Debugger\Helper\FileSystem
+     */
+    private function getFileSystem()
+    {
+        return $this->fileSystem;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Magenizr_Debugger::debugger_dashboard');
+    }
 }
