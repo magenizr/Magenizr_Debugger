@@ -1,9 +1,11 @@
 # Magenizr Debugger
 This Magento 2 module allows developers to view the latest report file from `./var/report/` or download the entire log and report folder as a tar file. 
 
-![Magenizr Debugger - Intro](http://download.magenizr.com/pub/magenizr_resetuibookmarks/all/intro.gif)
+![Magenizr Debugger - Intro](http://download.magenizr.com/pub/magenizr_debugger/all/intro.gif)
 
-![Magenizr Debugger - Backend](http://download.magenizr.com/pub/magenizr_resetuibookmarks/all/backend/01.gif)
+![Magenizr Debugger - Backend](http://download.magenizr.com/pub/magenizr_debugger/all/backend/01.gif)
+
+![Magenizr Debugger - Backend](http://download.magenizr.com/pub/magenizr_debugger/all/backend/02.gif)
 
 ## Purchase
 This module is available for free on [GitHub](https://github.com/magenizr) or [Magento Marketplace](https://marketplace.magento.com/partner/magenizr).
@@ -14,7 +16,7 @@ This module is available for free on [GitHub](https://github.com/magenizr) or [M
 
 ## Installation (Composer)
 
-1. Add this extension to your repository `composer config repositories.magenizr/magento2-debugger git https://github.com/magenizr/Magento2_Debugger.git`
+1. Add this extension to your repository `composer config repositories.magenizr/magento2-debugger git https://github.com/magenizr/Magenizr_Debugger.git`
 2. Update your composer.json `composer require "magenizr/magento2-debugger":"1.0.0"`
 
 ```
@@ -56,7 +58,7 @@ php bin/magento setup:upgrade
 The `Dashboard` of the module can be found in the backend section `Stores > Tools > Debugger`.
 
 ## Support
-If you have any issues with this extension, open an issue on [Github](https://github.com/magenizr/Magenizr_Debugger/issues). For a custom build, don't hesitate to contact us on [Magento Marketplace](https://marketplace.magento.com/partner/magenizr) or directly via modules@magenizr.com.
+If you have any issues with this extension, open an issue on [Github](https://github.com/magenizr/Magenizr_Debugger/issues). For a custom build, don't hesitate to contact us on [Magento Marketplace](https://marketplace.magento.com/partner/magenizr).
 
 ## Roadmap
 * Display all information from phpinfo()
