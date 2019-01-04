@@ -16,8 +16,7 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Magenizr\Debugger\Block\Adminhtml\Base" name="magenizr.debugger.adminhtml.view.dashboard" template="Magenizr_Debugger::view/dashboard.phtml"/>
-            <block class="Magenizr\Debugger\Block\Adminhtml\Base" name="magenizr.debugger.adminhtml.info" template="Magenizr_Debugger::info.phtml"/>
+            <block class="Magenizr\Debugger\Block\Adminhtml\Dashboard" name="magenizr.debugger.adminhtml.view.dashboard" template="Magenizr_Debugger::view/dashboard.phtml"/>
         </referenceContainer>
     </body>
 </page>

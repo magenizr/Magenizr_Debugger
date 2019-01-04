@@ -8,10 +8,10 @@ This Magento 2 module allows developers to view the latest report file from `./v
 ![Magenizr Debugger - Backend](http://download.magenizr.com/pub/magenizr_debugger/all/backend/02.gif)
 
 ## Purchase
-This module is available for free on [GitHub](https://github.com/magenizr) or [Magento Marketplace](https://marketplace.magento.com/partner/magenizr).
+This module is available for free on [GitHub](https://github.com/magenizr). For warranty and support, please purchase the module on https://shop.magenizr.com.
 
 ## System Requirements
-* Magento 2.1.x, 2.2.x
+* Magento 2.1.x, 2.2.x, 2.3.x
 * PHP 5.x, 7.x
 
 ## Installation (Composer)
@@ -68,6 +68,10 @@ If you have any issues with this extension, open an issue on [Github](https://gi
 Follow us on [GitHub](https://github.com/magenizr), [Twitter](https://twitter.com/magenizr) and [Facebook](https://www.facebook.com/magenizr).
 
 ## History
+===== 1.0.1 =====
+* Admin Resource in admin controller refactored
+* Date and time for report file added
+
 ===== 1.0.0 =====
 * Stable version
 

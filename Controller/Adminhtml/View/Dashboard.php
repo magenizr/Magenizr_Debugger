@@ -19,6 +19,7 @@ use Magento\Framework\Exception\CouldNotDeleteException;
  */
 class Dashboard extends \Magento\Backend\App\Action
 {
+    const ADMIN_RESOURCE = 'Magenizr_Debugger::debugger_dashboard';
 
     /**
      * Dashboard constructor.
@@ -46,13 +47,5 @@ class Dashboard extends \Magento\Backend\App\Action
         );
 
         return $resultPage;
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Magenizr_Debugger::debugger_dashboard');
     }
 }

@@ -17,7 +17,7 @@ $reportFile = $block->getFileSystem()->getLastReportFile();
 
 ?>
 
-<div id="magenizr-debug">
+<div id="magenizr-debugger">
 
     <?php if ($helper->isAccessRestricted()): ?>
         <p><?php echo __('The access to this feature is restricted.'); ?></p>
@@ -70,7 +70,7 @@ $reportFile = $block->getFileSystem()->getLastReportFile();
                     <h2><?php echo __('Report'); ?></h2>
                     <?php if ($helper->getScopeConfig('report_display_latest')): ?>
                         <?php if ($reportFile): ?>
-                            <p><?php echo __('Latest report file <strong>%1</strong> from ./var/report/.', basename($reportFile)); ?></p>
+                            <p><?php echo __('Latest report file <strong>%1</strong> from <strong>%2</strong> located in ./var/report/.', $this->getBasename($reportFile), $this->getFileCTime($reportFile)); ?></p>
 
                             <textarea class=""><?php echo $block->getFileSystem()->getLastReportFileContent(); ?></textarea>
                         <?php else: ?>

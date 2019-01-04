@@ -16,13 +16,13 @@ namespace Magenizr\Debugger\Helper;
  */
 class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
 {
-
     private $lastReportFile;
 
     /**
      * FileSystem constructor.
      * @param \Magento\Framework\Filesystem\Driver\File $driverFile
      * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
+     * @param \Magento\Framework\Filesystem\Io\File $fileSystemIo
      * @param Data $data
      * @param \Magento\Framework\Archive\Tar $tarArchive
      * @param \Magento\Framework\App\Helper\Context $context
@@ -30,12 +30,14 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     public function __construct(
         \Magento\Framework\Filesystem\Driver\File $driverFile,
         \Magento\Framework\Filesystem\DirectoryList $directoryList,
+        \Magento\Framework\Filesystem\Io\File $fileSystemIo,
         \Magenizr\Debugger\Helper\Data $data,
         \Magento\Framework\Archive\Tar $tarArchive,
         \Magento\Framework\App\Helper\Context $context
     ) {
         $this->driverFile = $driverFile;
         $this->directoryList = $directoryList;
+        $this->fileSystemIo = $fileSystemIo;
         $this->data = $data;
         $this->tarArchive = $tarArchive;
 
@@ -48,6 +50,15 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     public function getDriverFile()
     {
         return $this->driverFile;
+    }
+
+    /**
+     * @param $filePath
+     * @return mixed
+     */
+    public function getFileSystemIo()
+    {
+        return $this->fileSystemIo;
     }
 
     /**
@@ -123,7 +134,7 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $labels = [
             'var/log' => __('Logs'),
-            'var/report' => __('Report'),
+            'var/report' => __('Reports'),
         ];
 
         return $labels[$dir];

@@ -11,10 +11,10 @@
 namespace Magenizr\Debugger\Block\Adminhtml;
 
 /**
- * Class Base
+ * Class Dashboard
  * @package Magenizr\Debugger\Block\Adminhtml
  */
-class Base extends \Magento\Framework\View\Element\Template
+class Dashboard extends \Magento\Framework\View\Element\Template
 {
     /**
      * Base constructor.
@@ -50,6 +50,28 @@ class Base extends \Magento\Framework\View\Element\Template
     public function getPhp()
     {
         return $this->php;
+    }
+
+    /**
+     * @param $file
+     * @return false|string
+     */
+    public function getFileCTime($file)
+    {
+        $file = $this->getFileSystem()->getDriverFile()->stat($file);
+
+        return date('F d Y H:i:s', $file['ctime']);
+    }
+
+    /**
+     * @param $file
+     * @return mixed
+     */
+    public function getBasename($file)
+    {
+        $file = $this->getFileSystem()->getFileSystemIo()->getPathInfo($file);
+
+        return $file['basename'];
     }
 
     /**

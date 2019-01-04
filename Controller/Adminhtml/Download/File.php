@@ -19,6 +19,8 @@ use Magento\Framework\Exception\CouldNotDeleteException;
  */
 class File extends \Magento\Backend\App\Action
 {
+    const ADMIN_RESOURCE = 'Magenizr_Debugger::debugger_dashboard';
+
     /**
      * File constructor.
      * @param \Magento\Backend\App\Action\Context $context
@@ -92,13 +94,5 @@ class File extends \Magento\Backend\App\Action
     private function getFileSystem()
     {
         return $this->fileSystem;
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('Magenizr_Debugger::debugger_dashboard');
     }
 }
