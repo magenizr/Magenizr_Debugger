@@ -1,14 +1,14 @@
 # Magenizr Debugger
-This Magento 2 module allows developers to view the latest report file from `./var/report/` or download the entire log and report folder as a tar file. 
+This Magento 2 module allows developers to view the latest report file from `./var/report/` or download the entire log and report folder as a tar file.
 
-![Magenizr Debugger - Intro](http://download.magenizr.com/pub/magenizr_debugger/all/intro.gif)
+![Magenizr Debugger - Intro](https://download.magenizr.com/pub/magenizr_debugger/all/intro.gif)
 
-![Magenizr Debugger - Backend](http://download.magenizr.com/pub/magenizr_debugger/all/backend/01.gif)
+![Magenizr Debugger - Backend](https://download.magenizr.com/pub/magenizr_debugger/all/backend/01.gif)
 
-![Magenizr Debugger - Backend](http://download.magenizr.com/pub/magenizr_debugger/all/backend/02.gif)
+![Magenizr Debugger - Backend](https://download.magenizr.com/pub/magenizr_debugger/all/backend/02.gif)
 
 ## Purchase
-This module is available for free on [GitHub](https://github.com/magenizr). For warranty and support, please purchase the module on https://shop.magenizr.com.
+This module is available for free on [GitHub](https://github.com/magenizr). For warranty and support, you can purchase the module on https://shop.magenizr.com.
 
 ## System Requirements
 * Magento 2.1.x, 2.2.x, 2.3.x
@@ -58,7 +58,7 @@ php bin/magento setup:upgrade
 The `Dashboard` of the module can be found in the backend section `Stores > Tools > Debugger`.
 
 ## Support
-If you have any issues with this extension, open an issue on [Github](https://github.com/magenizr/Magenizr_Debugger/issues). For a custom build, don't hesitate to contact us on [Magento Marketplace](https://marketplace.magento.com/partner/magenizr).
+If you experience any issues, don't hesitate to open an issue on [Github](https://github.com/magenizr/Magenizr_Debugger/issues). For a custom build, don't hesitate to contact us on [Magento Marketplace](https://marketplace.magento.com/partner/magenizr).
 
 ## Roadmap
 * Display all information from phpinfo()
