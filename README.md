@@ -1,11 +1,11 @@
 # Magenizr Debugger
 This Magento 2 module allows developers to view the latest report file from `./var/report/` or download the entire log and report folder as a tar file.
 
-![Magenizr Debugger - Intro](https://download.magenizr.com/pub/magenizr_debugger/all/intro.gif)
+![Magenizr Debugger - Intro](http://download.magenizr.com/pub/magenizr_debugger/all/intro.gif)
 
-![Magenizr Debugger - Backend](https://download.magenizr.com/pub/magenizr_debugger/all/backend/01.gif)
+![Magenizr Debugger - Backend](http://download.magenizr.com/pub/magenizr_debugger/all/backend/01.gif)
 
-![Magenizr Debugger - Backend](https://download.magenizr.com/pub/magenizr_debugger/all/backend/02.gif)
+![Magenizr Debugger - Backend](http://download.magenizr.com/pub/magenizr_debugger/all/backend/02.gif)
 
 ## Purchase
 This module is available for free on [GitHub](https://github.com/magenizr). For warranty and support, you can purchase the module on https://shop.magenizr.com.
