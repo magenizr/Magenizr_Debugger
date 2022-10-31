@@ -1,23 +1,34 @@
 <?php
+declare(strict_types=1);
 /**
  * Magenizr Debugger
  *
- * @category    Magenizr
- * @package     Magenizr_Debugger
- * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
- * @license     http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @copyright   Copyright (c) 2018 - 2022 Magenizr (https://www.magenizr.com)
+ * @license     https://www.magenizr.com/license Magenizr EULA
  */
 
 namespace Magenizr\Debugger\Block\Adminhtml;
 
-/**
- * Class Dashboard
- * @package Magenizr\Debugger\Block\Adminhtml
- */
 class Dashboard extends \Magento\Framework\View\Element\Template
 {
     /**
-     * Base constructor.
+     * @var \Magenizr\Debugger\Helper\Data
+     */
+    private $helper;
+
+    /**
+     * @var \Magenizr\Debugger\Helper\Php
+     */
+    private $php;
+
+    /**
+     * @var \Magenizr\Debugger\Helper\FileSystem
+     */
+    private $fileSystem;
+
+    /**
+     * Init Constructor
+     *
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magenizr\Debugger\Helper\Data $helper
      * @param \Magenizr\Debugger\Helper\Php $php
@@ -37,6 +48,8 @@ class Dashboard extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * Return fileSystem
+     *
      * @return \Magenizr\Debugger\Helper\FileSystem
      */
     public function getFileSystem()
@@ -45,6 +58,8 @@ class Dashboard extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * Return php
+     *
      * @return \Magenizr\Debugger\Helper\Php
      */
     public function getPhp()
@@ -53,7 +68,9 @@ class Dashboard extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param $file
+     * Return create time of a file
+     *
+     * @param string $file
      * @return false|string
      */
     public function getFileCTime($file)
@@ -64,7 +81,9 @@ class Dashboard extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * @param $file
+     * Return basename of a file
+     *
+     * @param string $file
      * @return mixed
      */
     public function getBasename($file)
@@ -75,6 +94,8 @@ class Dashboard extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * Return helper
+     *
      * @return \Magenizr\Debugger\Helper\Data
      */
     public function getHelper()

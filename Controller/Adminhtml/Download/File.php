@@ -1,11 +1,10 @@
 <?php
+declare(strict_types=1);
 /**
  * Magenizr Debugger
  *
- * @category    Magenizr
- * @package     Magenizr_Debugger
- * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
- * @license     http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @copyright   Copyright (c) 2018 - 2022 Magenizr (https://www.magenizr.com)
+ * @license     https://www.magenizr.com/license Magenizr EULA
  */
 
 namespace Magenizr\Debugger\Controller\Adminhtml\Download;
@@ -13,16 +12,38 @@ namespace Magenizr\Debugger\Controller\Adminhtml\Download;
 use Magento\Catalog\Model;
 use Magento\Framework\Exception\CouldNotDeleteException;
 
-/**
- * Class File
- * @package Magenizr\Debugger\Controller\Adminhtml\Download
- */
 class File extends \Magento\Backend\App\Action
 {
-    const ADMIN_RESOURCE = 'Magenizr_Debugger::debugger_dashboard';
+    public const ADMIN_RESOURCE = 'Magenizr_Debugger::debugger_dashboard';
 
     /**
-     * File constructor.
+     * @var \Magento\Framework\Controller\Result\RawFactory
+     */
+    private $resultRawFactory;
+
+    /**
+     * @var \Magento\Framework\App\Response\Http\FileFactory
+     */
+    private $fileFactory;
+
+    /**
+     * @var \Magenizr\Debugger\Helper\Data
+     */
+    private $helper;
+
+    /**
+     * @var \Magenizr\Debugger\Helper\FileSystem
+     */
+    private $fileSystem;
+
+    /**
+     * @var \Magento\Framework\Filesystem\DirectoryList
+     */
+    private $directoryList;
+
+    /**
+     * Init Constructor
+     *
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
      * @param \Magento\Framework\App\Response\Http\FileFactory $fileFactory
@@ -48,6 +69,8 @@ class File extends \Magento\Backend\App\Action
     }
 
     /**
+     * Init execute
+     *
      * @return mixed
      */
     public function execute()
@@ -89,6 +112,8 @@ class File extends \Magento\Backend\App\Action
     }
 
     /**
+     * Return filesystem
+     *
      * @return \Magenizr\Debugger\Helper\FileSystem
      */
     private function getFileSystem()

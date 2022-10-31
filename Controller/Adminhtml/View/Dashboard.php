@@ -1,11 +1,10 @@
 <?php
+declare(strict_types=1);
 /**
  * Magenizr Debugger
  *
- * @category    Magenizr
- * @package     Magenizr_Debugger
- * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
- * @license     http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @copyright   Copyright (c) 2018 - 2022 Magenizr (https://www.magenizr.com)
+ * @license     https://www.magenizr.com/license Magenizr EULA
  */
 
 namespace Magenizr\Debugger\Controller\Adminhtml\View;
@@ -13,16 +12,18 @@ namespace Magenizr\Debugger\Controller\Adminhtml\View;
 use Magento\Catalog\Model;
 use Magento\Framework\Exception\CouldNotDeleteException;
 
-/**
- * Class Dashboard
- * @package Magenizr\Debugger\Controller\Adminhtml\View
- */
 class Dashboard extends \Magento\Backend\App\Action
 {
-    const ADMIN_RESOURCE = 'Magenizr_Debugger::debugger_dashboard';
+    public const ADMIN_RESOURCE = 'Magenizr_Debugger::debugger_dashboard';
 
     /**
-     * Dashboard constructor.
+     * @var \Magento\Framework\View\Result\PageFactory
+     */
+    private $pageFactory;
+
+    /**
+     * Init Constructor
+     *
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\View\Result\PageFactory $pageFactory
      */
@@ -36,6 +37,8 @@ class Dashboard extends \Magento\Backend\App\Action
     }
 
     /**
+     * Init execute
+     *
      * @return mixed
      */
     public function execute()

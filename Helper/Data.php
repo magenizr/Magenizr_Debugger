@@ -1,11 +1,10 @@
 <?php
+declare(strict_types=1);
 /**
  * Magenizr Debugger
  *
- * @category    Magenizr
- * @package     Magenizr_Debugger
- * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
- * @license     http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @copyright   Copyright (c) 2018 - 2022 Magenizr (https://www.magenizr.com)
+ * @license     https://www.magenizr.com/license Magenizr EULA
  */
 
 namespace Magenizr\Debugger\Helper;
@@ -15,7 +14,13 @@ use \Magento\Framework\App\Request\Http;
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /**
-     * Data constructor.
+     * @var Http
+     */
+    private $request;
+
+    /**
+     * Init Constructor
+     *
      * @param Http $request
      * @param \Magento\Framework\App\Helper\Context $context
      */
@@ -29,11 +34,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Check if access is restricted ( by IP )
+     *
      * @return bool
      */
     public function isAccessRestricted()
     {
-        if (empty(trim($this->getScopeConfig('restriction_ip')))) {
+        if (empty($this->getScopeConfig('restriction_ip')) || empty(trim($this->getScopeConfig('restriction_ip')))) {
             return false;
         }
 
@@ -47,6 +54,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Check if module is enabled
+     *
      * @return mixed
      */
     public function isModuleEnabled()
@@ -55,7 +64,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $param
+     * Get param from URL
+     *
+     * @param string $param
      * @return mixed
      */
     public function getParam($param)
@@ -64,7 +75,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $type
+     * Get path by type
+     *
+     * @param string $type
      * @return bool|mixed
      */
     public function getPathByType($type)
@@ -78,7 +91,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $field
+     * Get scope value from core_config_data
+     *
+     * @param string $field
      * @return mixed
      */
     public function getScopeConfig($field)

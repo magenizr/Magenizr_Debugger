@@ -1,30 +1,26 @@
-# Magenizr Debugger
+# Debugger
 This Magento 2 module allows developers to view the latest report file from `./var/report/` or download the entire log and report folder as a tar file.
 
-![Magenizr Debugger - Intro](http://download.magenizr.com/pub/magenizr_debugger/all/intro.gif)
-
-![Magenizr Debugger - Backend](http://download.magenizr.com/pub/magenizr_debugger/all/backend/01.gif)
-
-![Magenizr Debugger - Backend](http://download.magenizr.com/pub/magenizr_debugger/all/backend/02.gif)
+![Magenizr Debugger - Backend](https://images2.imgbox.com/d1/de/jzLYOdv0_o.png)
 
 ## Purchase
 This module is available for free on [GitHub](https://github.com/magenizr). For warranty and support, you can purchase the module on https://shop.magenizr.com.
 
 ## System Requirements
-* Magento 2.1.x, 2.2.x, 2.3.x
+* Magento 2.3.x, 2.4.x
 * PHP 5.x, 7.x
 
 ## Installation (Composer)
 
-1. Add this extension to your repository `composer config repositories.magenizr/magento2-debugger git https://github.com/magenizr/Magenizr_Debugger.git`
-2. Update your composer.json `composer require "magenizr/magento2-debugger":"1.0.0"`
+1. Update your composer.json `composer require "magenizr/magento2-debugger":"1.0.2" --no-update`
+2. Install dependencies and update your composer.lock `composer update magenizr/magento2-debugger --lock`
 
 ```
 ./composer.json has been updated
 Loading composer repositories with package information
 Updating dependencies (including require-dev)              
 Package operations: 1 install, 0 updates, 0 removals
-  - Installing magenizr/magento2-debugger (1.0.0): Downloading (100%)         
+  - Installing magenizr/magento2-debugger (1.0.2): Downloading (100%)         
 Writing lock file
 Generating autoload files
 ```
@@ -33,12 +29,37 @@ Generating autoload files
 
 ```
 php bin/magento module:enable Magenizr_Debugger --clear-static-content
-php bin/magento setup:upgrade
+```
+
+## Installation (Composer 2)
+
+1. Update your composer.json `composer require "magenizr/magento2-debugger":"1.0.2" --no-update`
+2. Use `composer update magenizr/magento2-debugger --no-install` to update your composer.lock file.
+
+```
+Updating dependencies
+Lock file operations: 1 install, 1 update, 0 removals
+  - Locking magenizr/magento2-adminbranding (1.0.1)
+```
+
+3. And then `composer install` to install the package.
+
+```
+Installing dependencies from lock file (including require-dev)
+Verifying lock file contents can be installed on current platform.
+Package operations: 1 install, 0 update, 0 removals
+  - Installing magenizr/magento2-adminbranding (1.0.1): Extracting archive
+```
+
+4. Enable the module and clear static content.
+
+```
+php bin/magento module:enable Magenizr_AdminBranding --clear-static-content
 ```
 
 ## Installation (Manually)
 1. Download the latest version of the source code.
-2. Extract the downloaded tar.gz file. Example: `tar -xzf Magenizr_Debugger_1.0.0.tar.gz`.
+2. Extract the downloaded tar.gz file. Example: `tar -xzf Magenizr_Debugger_1.0.2.tar.gz`.
 3. Copy the code into `./app/code/Magenizr/Debugger/`.
 4. Enable the module and clear static content.
 
@@ -68,6 +89,10 @@ If you experience any issues, don't hesitate to open an issue on [Github](https:
 Follow us on [GitHub](https://github.com/magenizr), [Twitter](https://twitter.com/magenizr) and [Facebook](https://www.facebook.com/magenizr).
 
 ## History
+===== 1.0.2 =====
+* Cleanup various files to meet coding standards (EQP, ECG)
+* Framework constraint removed from `composer.json`
+
 ===== 1.0.1 =====
 * Admin Resource in admin controller refactored
 * Date and time for report file added

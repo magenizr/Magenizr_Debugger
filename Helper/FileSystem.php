@@ -1,25 +1,49 @@
 <?php
+declare(strict_types=1);
 /**
  * Magenizr Debugger
  *
- * @category    Magenizr
- * @package     Magenizr_Debugger
- * @copyright   Copyright (c) 2018 Magenizr (http://www.magenizr.com)
- * @license     http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @copyright   Copyright (c) 2018 - 2022 Magenizr (https://www.magenizr.com)
+ * @license     https://www.magenizr.com/license Magenizr EULA
  */
 
 namespace Magenizr\Debugger\Helper;
 
-/**
- * Class FileSystem
- * @package Magenizr\Debugger\Helper
- */
 class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    /**
+     * @var \Magento\Framework\Filesystem\Driver\File
+     */
+    private $driverFile;
+
+    /**
+     * @var \Magento\Framework\Filesystem\DirectoryList
+     */
+    private $directoryList;
+
+    /**
+     * @var \Magento\Framework\Filesystem\Io\File
+     */
+    private $fileSystemIo;
+
+    /**
+     * @var Data
+     */
+    private $data;
+
+    /**
+     * @var \Magento\Framework\Archive\Tar
+     */
+    private $tarArchive;
+
+    /**
+     * @var string
+     */
     private $lastReportFile;
 
     /**
-     * FileSystem constructor.
+     * Init Constructor
+     *
      * @param \Magento\Framework\Filesystem\Driver\File $driverFile
      * @param \Magento\Framework\Filesystem\DirectoryList $directoryList
      * @param \Magento\Framework\Filesystem\Io\File $fileSystemIo
@@ -45,6 +69,8 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Return driverFile
+     *
      * @return \Magento\Framework\Filesystem\Driver\File
      */
     public function getDriverFile()
@@ -53,7 +79,9 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $filePath
+     * Return fileSystemIo
+     *
+     * @param string $filePath
      * @return mixed
      */
     public function getFileSystemIo()
@@ -62,6 +90,8 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Return directoryList
+     *
      * @return \Magento\Framework\Filesystem\DirectoryList
      */
     public function getDir()
@@ -70,7 +100,9 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $dir
+     * Return Absolute Path
+     *
+     * @param string $dir
      * @return mixed
      */
     public function getAbsolutePath($dir = '')
@@ -84,7 +116,9 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $path
+     * Return folder size
+     *
+     * @param string $path
      * @return int
      */
     public function getDirSize($path)
@@ -102,7 +136,9 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $type
+     * Return folder details
+     *
+     * @param string $type
      * @return array
      */
     public function getDirDetails($type)
@@ -127,7 +163,9 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $dir
+     * Return label
+     *
+     * @param string $dir
      * @return array
      */
     public function getLabel($dir)
@@ -141,7 +179,9 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $path
+     * Return files from directory by path
+     *
+     * @param string $path
      * @return array
      */
     public function getFilesFromDirectory($path)
@@ -166,6 +206,12 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
         return [];
     }
 
+    /**
+     * Set last report file
+     *
+     * @return void
+     * @throws \Magento\Framework\Exception\FileSystemException
+     */
     private function setLastReportFile()
     {
         if ($path = $this->getAbsolutePath('var/report')) {
@@ -185,7 +231,10 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @return bool
+     * Return last report file
+     *
+     * @return false|string
+     * @throws \Magento\Framework\Exception\FileSystemException
      */
     public function getLastReportFile()
     {
@@ -199,6 +248,8 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Return content of most recent report file
+     *
      * @return bool
      */
     public function getLastReportFileContent()
@@ -211,8 +262,10 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $sourceDir
-     * @param $destFile
+     * Tar folder
+     *
+     * @param string $sourceDir
+     * @param string $destFile
      * @return mixed
      */
     public function packFolder($sourceDir, $destFile)
@@ -223,10 +276,12 @@ class FileSystem extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
-     * @param $bytes
+     * Return readable file size
+     *
+     * @param string $bytes
      * @return string
      */
-    public function getHumanFilesize($bytes)
+    public function getHumanFilesize($bytes = 0)
     {
         $base = log($bytes) / log(1024);
         $suffix = ['B', 'KB', 'MB', 'GB', 'TB'];
