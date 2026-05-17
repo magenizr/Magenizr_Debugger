@@ -3,9 +3,6 @@ This Magento 2 module allows developers to view the latest report file from `./v
 
 ![Magenizr Debugger - Backend](https://images2.imgbox.com/d1/de/jzLYOdv0_o.png)
 
-## Purchase
-This module is available for free on [GitHub](https://github.com/magenizr). For warranty and support, you can purchase the module on https://shop.magenizr.com.
-
 ## System Requirements
 * Magento 2.3.x, 2.4.x
 * PHP 5.x, 7.x
@@ -85,9 +82,6 @@ If you experience any issues, don't hesitate to open an issue on [Github](https:
 * Display all information from phpinfo()
 * Display available disk space
 
-## Contact
-Follow us on [GitHub](https://github.com/magenizr), [Twitter](https://twitter.com/magenizr) and [Facebook](https://www.facebook.com/magenizr).
-
 ## History
 ===== 1.0.2 =====
 * Cleanup various files to meet coding standards (EQP, ECG)
@@ -102,3 +96,13 @@ Follow us on [GitHub](https://github.com/magenizr), [Twitter](https://twitter.co
 
 ## License
 [OSL - Open Software Licence 3.0](http://opensource.org/licenses/osl-3.0.php)
+
+---
+
+## About [Magenizr](https://www.magenizr.com.au/)
+
+Built and maintained by [Magenizr](https://www.magenizr.com.au/) — an Australian [Adobe Commerce & Magento development agency](https://www.magenizr.com.au/services/adobe-commerce/) based in Bendigo, Victoria. We build custom Magento modules, handle platform migrations, and provide ongoing support for businesses across [Melbourne](https://www.magenizr.com.au/web-development-melbourne/), Sydney, Brisbane and the DACH region.
+
+- [Our Services](https://www.magenizr.com.au/services/adobe-commerce/) — Custom modules, migrations, support
+- [Book a Free Consultation](https://www.magenizr.com.au/book/) — 30-minute call, no obligation
+- [All Open-Source Modules](https://github.com/magenizr) — Our full collection on GitHub
